@@ -1,9 +1,9 @@
-import AuthForms from "@/layout/AuthForms"
+import SignInForm from "@/layout/SignInForm"
 
 const Page = () => {
   return (
     <div className="h-screen">
-        <AuthForms />
+        <SignInForm />
     </div>
   )
 }
