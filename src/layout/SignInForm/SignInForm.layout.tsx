@@ -5,6 +5,7 @@ import AuthForms from "../AuthForms";
 import Button from "@/components/Button";
 import { useState } from "react";
 import { validateEmail } from "../../../utils/common";
+import Link from "next/link";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
@@ -26,31 +27,10 @@ const SignInForm = () => {
     });
 
     if(res.status === 200) {
-        console.log(res);
+        const response = await res.json();
+        console.log(response);
+        localStorage.setItem("token", response.token);
     }
-
-    // const sentToken = sessionStorage.getItem("otp");
-    // if (sentToken === enteredToken) {
-    //   const res = await fetch("/api/auth", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       email: user.email,
-    //       name: user.name,
-    //       password: user.password,
-    //       action: "signup",
-    //     }),
-    //   });
-
-    //   if (res.status === 200) {
-    //     sessionStorage.removeItem("otp");
-    //     setCurrentStep(3);
-    //   }
-    // }
-
-    // alert("Wrong OTP added, please try again");
   };
 
   return (
@@ -66,7 +46,7 @@ const SignInForm = () => {
         <TextInput placeholder="Password" value={password} onChange={(e) => setPassword(e?.target.value as string)} type="password"/>
         <Button text="Sign in" onClick={handleSignIn} />
       </form>
-      <p className="mt-8">Want to have an account with us? Sign up </p>
+      <p className="mt-8">Want to have an account with us? <Link href="signup" className="text-teal-500">Sign up</Link> </p>
     </AuthForms>
   );
 };

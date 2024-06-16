@@ -1,9 +1,9 @@
-import SignInForm from "@/layout/SignInForm"
+import SignUpForm from "@/layout/SignUpForm"
 
 const Page = () => {
   return (
-    <div className="h-screen">
-        <SignInForm />
+    <div className="h-screen flex bg-black-primary">
+        <SignUpForm />
     </div>
   )
 }
