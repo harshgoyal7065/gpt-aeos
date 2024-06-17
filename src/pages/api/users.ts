@@ -20,6 +20,8 @@ export default async function handler(
     case "GET":
       if (req.body.action === "user-team") {
         return getTeamsInfo(req, res);
+      } else {
+        return res.status(400).json({ error: 'Invalid action' });
       }
     default:
       return res.status(405).json({ error: "Method not allowed" });
@@ -59,8 +61,12 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
       [userId]
     );
 
-    console.log(response);
-    res.status(400).json({ error: "Team was not created" });
+    if(response.rows[0].team_id) {
+      return res.status(200).json({ message: 'Team created successfully', data: {
+        teamData: response.rows
+      } });
+
+    }
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ error: "Internal server error" });
