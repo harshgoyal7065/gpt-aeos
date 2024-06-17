@@ -59,9 +59,7 @@ GROUP BY u.id, u.name, u.email;
     if (response.rows[0].user_name) {
       return res.status(200).json({
         message: "User data fetched successfully",
-        data: {
-          userData: response.rows[0],
-        },
+        userData: response.rows[0],
       });
     }
   } catch (error) {
