@@ -12,20 +12,33 @@ const MainChatArea = () => {
   const activeConversation = useGptStore((state: any) => state.activeConversation);
 
   const askQuestion = async () => {
-    updateConversationList(userQuestion.substring(0,50));
-    const createQuestionResponse = await fetch("/api/conversations", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-      },
-      body: JSON.stringify({
-        team_id: activeTeamDetails.team_id,
-        conversation_title: userQuestion.substring(0,50)
-      })
-    })
+    const token = localStorage.getItem("token");
+    let conversationId = '';
 
-    if(createQuestionResponse.status === 200) {
+    if(!activeConversation) {
+      updateConversationList(userQuestion.substring(0,50));
+
+      const createQuestionResponse = await fetch("/api/conversations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          team_id: activeTeamDetails.team_id,
+          conversation_title: userQuestion.substring(0,50)
+        })
+      })
+
+      if(createQuestionResponse.status === 200) {  
+        const conversationResponse = await createQuestionResponse.json();
+        conversationId = conversationResponse.conversation.id;
+      } else {
+        alert('Something went wrong!')
+        return;
+      }
+    }
+
       // const response = await fetch("https://api.openai.com/v1/chat/completions", {
       //   method: "POST",
       //   headers: {
@@ -39,31 +52,30 @@ const MainChatArea = () => {
       //   })
       // })
 
-      const conversationResponse = await createQuestionResponse.json();
       if(true) {
         // const res = await response.json();
         const createConversationDetailsResponse = await fetch("/api/conversation-details", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+            "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({
             question: userQuestion,
             answer: 'This is a random testing message',
-            conversation_id: conversationResponse.data.id
+            conversation_id: conversationId
           })
         })
       }
 
     }
-  }
+
   return (
     <div className="h-screen flex flex-col justify-between">
         <div className="flex-grow p-4 overflow-y-auto">
           <div className="w-10/12 m-auto">
           {
-            activeConversation.map((conversation: any) => <>
+            activeConversation?.map((conversation: any) => <>
             <div className="border border-white-primary text-white-primary p-3 rounded-lg mb-4">{conversation.question}</div>
             <div className="border border-gray-primary text-white-primary p-3 rounded-lg bg-text-slate-800">{conversation.answer}</div>
             </>)
