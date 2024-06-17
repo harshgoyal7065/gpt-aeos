@@ -46,7 +46,6 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
       'team_name', td.team_name,
       'available_credit', td.available_credit,
       'current_number_of_members', td.current_number_of_members,
-      'conversationData', COALESCE(td.conversation_data, '[]')
     )
   ) AS teamData
 FROM Users u
