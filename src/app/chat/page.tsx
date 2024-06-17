@@ -7,6 +7,9 @@ import { useGptStore } from "@/store";
 import { useEffect } from "react";
 
 const Chat = () => {
+  const updateTeamList = useGptStore((state: any) => state.updateTeamList);
+  const updateActiveTeamDetails = useGptStore((state: any) => state.updateActiveTeamDetails)
+
   const getTeamInfo = async () => {
     const token = localStorage.getItem("token")
     const response = await fetch("/api/users", {
@@ -17,8 +20,8 @@ const Chat = () => {
       }
     })
     const res = await response.json();
-    console.log(res.data);
-
+    updateTeamList(res.teamData);
+    updateActiveTeamDetails(res.teamData[0]);
   }
   useEffect(() => {
     getTeamInfo();

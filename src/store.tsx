@@ -27,5 +27,13 @@ export const useGptStore = create()((set) => ({
     })),
     updateConversationList: (newConversation: any) => set((state: any) => ({
         conversationList: [...state.conversationList, newConversation]
-    }))
+    })),
+    teamList: [],
+    activeTeamDetails: {},
+    updateTeamList: (teamData: any) => set((state: any) => ({
+        teamList: teamData
+    })),
+    updateActiveTeamDetails: (newTeam: any) => set(() => ({
+        activeTeamDetails: newTeam
+    })),
 }))

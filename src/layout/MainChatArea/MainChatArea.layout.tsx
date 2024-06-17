@@ -8,6 +8,8 @@ import { useState } from "react";
 const MainChatArea = () => {
   const [userQuestion, setUserQuestion] = useState("");
   const updateConversationList = useGptStore((state: any) => state.updateConversationList);
+  const activeTeamDetails = useGptStore((state: any) => state.activeTeamDetails);
+
   const askQuestion = async () => {
     updateConversationList(userQuestion.substring(0,50));
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
