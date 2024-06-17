@@ -12,6 +12,7 @@ const MainChatArea = () => {
 
   const askQuestion = async () => {
     updateConversationList(userQuestion.substring(0,50));
+    console.log(activeTeamDetails);
     const createQuestionResponse = await fetch("/api/conversations", {
       method: "POST",
       headers: {
@@ -19,7 +20,7 @@ const MainChatArea = () => {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        team_id: activeTeamDetails.id,
+        team_id: activeTeamDetails.team_id,
         conversation_title: userQuestion.substring(0,50)
       })
     })

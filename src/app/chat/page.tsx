@@ -20,8 +20,8 @@ const Chat = () => {
       }
     })
     const res = await response.json();
-    updateTeamList(res.teamData);
-    updateActiveTeamDetails(res.teamData[0]);
+    updateTeamList(res.data.teamData);
+    updateActiveTeamDetails(res.data.teamData[0]);
   }
   useEffect(() => {
     getTeamInfo();
