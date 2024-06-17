@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 const secret = process.env.JWT_SECRET as string; // Replace with your actual secret
 
-export const verifyToken = (authorizationHeader: string | null): string | null => {
+export const verifyToken = (authorizationHeader: string | undefined): string | null => {
   if (!authorizationHeader) {
     return null;
   }

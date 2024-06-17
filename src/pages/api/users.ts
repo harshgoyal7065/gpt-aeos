@@ -26,10 +26,9 @@ export default async function handler(
   }
 }
 
-async function getTeamsInfo(_req: ExtendedApiRequest, res: NextApiResponse) {
-  const headersList = headers();
-  const authToken = headersList.get('Authorization')
-  const userId = verifyToken(authToken);
+async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
+  const { authorization } = req.headers;
+  const userId = verifyToken(authorization);
 
   if(!userId) {
     return res.status(400).json({ error: "Invalid auth token" });

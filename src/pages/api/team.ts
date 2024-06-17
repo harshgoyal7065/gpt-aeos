@@ -13,11 +13,14 @@ const secretKey: Secret = process.env.JWT_SECRET as string;
 
 export default async function handler(req: ExtendedApiRequest, res: NextApiResponse) {
   const { method } = req;
+  console.log(method);
 
     switch (method) {
       case 'POST':
         if (req.body.action === 'team') {
           return handleCreateTeam(req, res);
+        } else {
+          return res.status(400).json({ error: 'Invalid action' });
         }
       default:
         return res.status(405).json({ error: 'Method not allowed' });
@@ -27,9 +30,8 @@ export default async function handler(req: ExtendedApiRequest, res: NextApiRespo
 
 async function handleCreateTeam(req: ExtendedApiRequest, res: NextApiResponse) {
   const { teamName } = req.body;
-  const headersList = headers();
-  const authToken = headersList.get('Authorization')
-  const userId = verifyToken(authToken);
+  const { authorization } = req.headers;
+  const userId = verifyToken(authorization);
 
   if(!userId) {
     return res.status(400).json({ error: "Invalid auth token" });

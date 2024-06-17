@@ -6,6 +6,7 @@ import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import { useGptStore } from "@/store";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/router";
 
 const SignUpForm = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +18,8 @@ const SignUpForm = () => {
 
   const updateUser = useGptStore((state: any) => state.updateUser);
   const user = useGptStore((state: any) => state.user);
+
+  const router = useRouter();
 
   const handleSendEmailConfirmation = async (e: any) => {
     e.preventDefault();
@@ -83,7 +86,7 @@ const SignUpForm = () => {
     });
 
     if (res.status === 200) {
-      redirect("/chat");
+      router.push("/chat")
     }
   };
 
