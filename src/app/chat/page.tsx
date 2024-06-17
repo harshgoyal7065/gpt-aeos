@@ -33,7 +33,7 @@ const Chat = () => {
         }
       })
       if(conversationResponse.status === 200) {
-        const conversationRes = await response.json();
+        const conversationRes = await conversationResponse.json();
         updateActiveTeamDetails({...res.data.userData.teamdata[0], conversationList: conversationRes.data.conversation});
       }
     }
