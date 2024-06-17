@@ -73,13 +73,13 @@ const Sidebar = () => {
         </button>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmit}>
-        <h3 className="text-lg leading-6 font-medium text-gray-900">
+        <h3 className="text-lg leading-6 font-medium text-teal-400">
           Select your team
         </h3>
         <div className="mt-2">
           {
-            teamList.map((team: any) => <button key={team.team_id} onClick={() => setTeamId(team.team_id)}>
-              <InfoCard name={team.team_name} teamName={team.team_name} role={team.role_name}/>
+            teamList.map((team: any) => <button className="w-full" key={team.team_id} onClick={() => setTeamId(team.team_id)}>
+              <InfoCard name={team.team_name} teamName={team.team_name} role={team.role_name} showDisclaimer={false}/>
             </button>)
           }
         </div>

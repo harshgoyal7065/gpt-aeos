@@ -4,10 +4,10 @@ import NameAvatar from "../NameAvatar";
 import { GoArrowSwitch } from "react-icons/go";
 
 const InfoCard = (props: InfoCardProps) => {
-  const { name, teamName, role } = props;
+  const { name, teamName, role, showDisclaimer = true } = props;
   return (
-    <div className="gap-3 p-3 border border-white-primary rounded-lg">
-      <div className="flex">
+    <div className="p-3 border border-white-primary rounded-lg">
+      <div className="flex gap-3">
         <div>
           <NameAvatar name={name} />
         </div>
@@ -18,7 +18,9 @@ const InfoCard = (props: InfoCardProps) => {
           </p>
         </div>
       </div>
-      <p className="text-xs mt-4">Click on this card to switch teams</p>
+      {showDisclaimer && (
+        <p className="text-xs mt-4">Click on this card to switch teams</p>
+      )}
     </div>
   );
 };
