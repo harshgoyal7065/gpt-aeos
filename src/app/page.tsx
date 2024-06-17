@@ -1,7 +1,8 @@
+import withAuth from "@/components/withAuth";
 import MainChatArea from "@/layout/MainChatArea";
 import Sidebar from "@/layout/Sidebar";
 
-export default function Home() {
+const Home = () => {
   return (
     <div className="w-full flex bg-black-primary h-screen">
       <div className="flex-[1_1_0%]">
@@ -13,3 +14,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default withAuth(Home);

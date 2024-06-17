@@ -1,11 +1,12 @@
 "use client"
 
+import withAuth from "@/components/withAuth";
 import MainChatArea from "@/layout/MainChatArea";
 import Sidebar from "@/layout/Sidebar";
 import { useGptStore } from "@/store";
 import { useEffect } from "react";
 
-export default function Home() {
+const Chat = () => {
   const getTeamInfo = async () => {
     const token = localStorage.getItem("token")
     const response = await fetch("/api/team", {
@@ -34,3 +35,5 @@ export default function Home() {
     </div>
   );
 }
+
+export default withAuth(Chat);
