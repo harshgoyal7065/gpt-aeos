@@ -23,6 +23,7 @@ const Chat = () => {
     })
     if(response.status === 200) {
       const res = await response.json();
+      console.log(res);
       updateTeamList(res.data.userData.teamdata);
       updateUser({ ...user, name: res.data.userData.user_name, email: res.data.userData.user_email});
       const conversationResponse = await fetch(`/api/conversations?team_id=${res.data.userData.teamdata[0].team_id}`, {
@@ -34,6 +35,7 @@ const Chat = () => {
       })
       if(conversationResponse.status === 200) {
         const conversationRes = await conversationResponse.json();
+        console.log(conversationRes);
         updateActiveTeamDetails({...res.data.userData.teamdata[0], conversationList: conversationRes.data.conversation});
       }
     }
