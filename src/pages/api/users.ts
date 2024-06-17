@@ -45,12 +45,14 @@ SELECT
       'team_id', td.id,
       'team_name', td.team_name,
       'available_credit', td.available_credit,
-      'current_number_of_members', td.current_number_of_members
+      'current_number_of_members', td.current_number_of_members,
+      'role_name', r.role_name
     )
   ) AS teamData
 FROM users u
 JOIN team_members tm ON u.id = tm.user_id
 JOIN teams td ON tm.team_id = td.id
+JOIN roles r ON tm.role_id = r.id
 WHERE u.id = $1
 GROUP BY u.id, u.name, u.email;
 `

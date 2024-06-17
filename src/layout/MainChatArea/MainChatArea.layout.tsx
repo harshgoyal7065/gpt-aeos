@@ -9,6 +9,7 @@ const MainChatArea = () => {
   const [userQuestion, setUserQuestion] = useState("");
   const updateConversationList = useGptStore((state: any) => state.updateConversationList);
   const activeTeamDetails = useGptStore((state: any) => state.activeTeamDetails);
+  const activeConversation = useGptStore((state: any) => state.activeConversation);
 
   const askQuestion = async () => {
     updateConversationList(userQuestion.substring(0,50));
@@ -59,7 +60,14 @@ const MainChatArea = () => {
   }
   return (
     <div className="h-full">
-        <div className="flex-1"></div>
+        <div className="flex-1">
+          {
+            activeConversation.map((conversation: any) => <>
+            <div className="border border-white-primary text-gray-primary p-3">{conversation.question}</div>
+            <div className="border border-white-primary text-gray-primary p-3 bg-gray-100">{conversation.answer}</div>
+            </>)
+          }
+        </div>
       <div className="w-10/12 m-auto flex gap-5">
         <div className="flex-[4_1_0%]">
           <TextInput placeholder="Enter your question" value={userQuestion} onChange={(e) => setUserQuestion(e?.target.value as string)}/>
