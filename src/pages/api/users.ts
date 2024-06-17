@@ -37,7 +37,7 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
 
   try {
     const query = `
-      WITH user_data AS (
+      WITH team_data AS (
   SELECT 
     t.id AS team_id,
     t.team_name,
