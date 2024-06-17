@@ -25,7 +25,7 @@ const Chat = () => {
       const res = await response.json();
       updateTeamList(res.data.userData.teamdata);
       updateUser({ ...user, name: res.data.userData.user_name, email: res.data.userData.user_email});
-      const conversationResponse = await fetch("/api/conversations", {
+      const conversationResponse = await fetch(`/api/conversations?team_id=${res.data.userData.teamdata[0].team_id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
