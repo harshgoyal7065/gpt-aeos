@@ -18,11 +18,7 @@ export default async function handler(
 
   switch (method) {
     case "GET":
-      if (req.body.action === "user-team") {
         return getTeamsInfo(req, res);
-      } else {
-        return res.status(400).json({ error: 'Invalid action' });
-      }
     default:
       return res.status(405).json({ error: "Method not allowed" });
   }
@@ -44,7 +40,7 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
       SELECT 
         t.id AS team_id,
         t.team_name,
-        t.available_credits,
+        t.available_credit,
         t.current_number_of_members,
         r.role_name
       FROM 
