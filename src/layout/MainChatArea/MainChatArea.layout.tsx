@@ -59,16 +59,18 @@ const MainChatArea = () => {
     }
   }
   return (
-    <div className="h-full">
-        <div className="flex-1">
+    <div className="h-screen flex flex-col justify-between">
+        <div className="flex-grow p-4 overflow-y-auto">
+          <div className="w-10/12 m-auto">
           {
             activeConversation.map((conversation: any) => <>
-            <div className="border border-white-primary text-gray-primary p-3">{conversation.question}</div>
-            <div className="border border-white-primary text-gray-primary p-3 bg-gray-100">{conversation.answer}</div>
+            <div className="border border-white-primary text-white-primary p-3 rounded-lg mb-4">{conversation.question}</div>
+            <div className="border border-gray-primary text-white-primary p-3 rounded-lg bg-text-slate-800">{conversation.answer}</div>
             </>)
           }
+          </div>
         </div>
-      <div className="w-10/12 m-auto flex gap-5">
+      <div className="w-10/12 m-auto flex gap-5 py-4">
         <div className="flex-[4_1_0%]">
           <TextInput placeholder="Enter your question" value={userQuestion} onChange={(e) => setUserQuestion(e?.target.value as string)}/>
         </div>
