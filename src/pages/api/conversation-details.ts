@@ -57,7 +57,7 @@ async function handleCreateQuestionAnswer(
 
     await client.query("COMMIT");
 
-    return res.status(201).json({
+    return res.status(200).json({
       question_answer: qaResult.rows[0],
       team: teamResult.rows[0],
     });

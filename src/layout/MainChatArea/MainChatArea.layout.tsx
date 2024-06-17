@@ -10,7 +10,7 @@ const MainChatArea = () => {
   const updateConversationList = useGptStore((state: any) => state.updateConversationList);
   const activeTeamDetails = useGptStore((state: any) => state.activeTeamDetails);
   const activeConversation = useGptStore((state: any) => state.activeConversation);
-  console.log(activeConversation);
+  const updateActiveConversation = useGptStore((state: any) => state.updateActiveConversation);
 
   const askQuestion = async () => {
     const token = localStorage.getItem("token");
@@ -38,6 +38,8 @@ const MainChatArea = () => {
         alert('Something went wrong!')
         return;
       }
+    } else {
+      conversationId = activeConversation[0].conversation_id;
     }
 
       // const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -54,7 +56,6 @@ const MainChatArea = () => {
       // })
 
       if(true) {
-        // const res = await response.json();
         const createConversationDetailsResponse = await fetch("/api/conversation-details", {
           method: "POST",
           headers: {
@@ -68,6 +69,16 @@ const MainChatArea = () => {
             team_id: activeTeamDetails.team_id
           })
         })
+
+        if(createConversationDetailsResponse.status === 200) {
+          const res = await createConversationDetailsResponse.json();
+          console.log(res);
+          if(activeConversation) {
+            updateActiveConversation([...activeConversation, {...res.question_answer}]);
+          } else {
+            updateActiveConversation([res.question_answer])
+          }
+        }
       }
 
     }
