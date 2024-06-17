@@ -23,7 +23,7 @@ async function handleCreateConversationThread(req: ExtendedApiRequest, res: Next
     try {
       const client = await pool.connect();
       const query = `
-          INSERT INTO conversation (conversation_title, team_id)
+          INSERT INTO conversations (conversation_title, team_id)
           VALUES ($1, $2)
           RETURNING *;
         `;
