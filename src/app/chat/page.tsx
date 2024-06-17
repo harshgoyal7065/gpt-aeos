@@ -8,7 +8,9 @@ import { useEffect } from "react";
 
 const Chat = () => {
   const updateTeamList = useGptStore((state: any) => state.updateTeamList);
-  const updateActiveTeamDetails = useGptStore((state: any) => state.updateActiveTeamDetails)
+  const updateActiveTeamDetails = useGptStore((state: any) => state.updateActiveTeamDetails);
+  const updateUser = useGptStore((state: any) => state.updateUser);
+  const user = useGptStore((state: any) => state.user);
 
   const getTeamInfo = async () => {
     const token = localStorage.getItem("token")
@@ -20,8 +22,9 @@ const Chat = () => {
       }
     })
     const res = await response.json();
-    updateTeamList(res.data.userData);
-    updateActiveTeamDetails(res.data.teamData[0]);
+    updateTeamList(res.data.userData.teamData);
+    updateUser({ ...user, name: res.data.userData.user_name, email: res.data.userData.user_email})
+    updateActiveTeamDetails(res.data.userData.teamData[0]);
   }
   useEffect(() => {
     getTeamInfo();

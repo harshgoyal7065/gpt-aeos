@@ -60,7 +60,7 @@ GROUP BY u.id, u.name, u.email;
       return res.status(200).json({
         message: "User data fetched successfully",
         data: {
-          userData: response.rows,
+          userData: response.rows[0],
         },
       });
     }
