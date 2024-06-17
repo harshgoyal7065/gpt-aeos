@@ -28,6 +28,7 @@ const MainChatArea = () => {
   const askQuestion = async () => {
     const token = localStorage.getItem("token");
     let conversationId = "";
+    setUserQuestion("");
 
     if (!activeConversation) {
       updateConversationList(userQuestion.substring(0, 50));
@@ -68,7 +69,8 @@ const MainChatArea = () => {
       })
     })
 
-    if (true) {
+    if (response.status === 200) {
+      const gptRes = await response.json();
       const createConversationDetailsResponse = await fetch(
         "/api/conversation-details",
         {
@@ -79,7 +81,7 @@ const MainChatArea = () => {
           },
           body: JSON.stringify({
             question: userQuestion,
-            answer: "This is a random testing message",
+            answer: gptRes.choices[0].message.content,
             conversation_id: conversationId,
             team_id: activeTeamDetails.team_id,
           }),
