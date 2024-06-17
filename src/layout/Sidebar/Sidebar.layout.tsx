@@ -5,7 +5,7 @@ import Tabs from "@/components/Tabs"
 import { useGptStore } from "@/store"
 
 const Sidebar = () => {
-  const conversationList = useGptStore((state: any) => state.conversationList);
+  const conversationList = useGptStore((state: any) => state.activeTeamDetails.conversationList);
   const activeTeamDetails = useGptStore((state: any) => state.activeTeamDetails);
   const user = useGptStore((state: any) => state.user);
   console.log(user);

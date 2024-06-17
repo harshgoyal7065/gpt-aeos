@@ -21,10 +21,22 @@ const Chat = () => {
         "Authorization": `Bearer ${token}`
       }
     })
-    const res = await response.json();
-    updateTeamList(res.data.userData.teamData);
-    updateUser({ ...user, name: res.data.userData.user_name, email: res.data.userData.user_email})
-    updateActiveTeamDetails(res.data.userData.teamData[0]);
+    if(response.status === 200) {
+      const res = await response.json();
+      updateTeamList(res.data.userData.teamdata);
+      updateUser({ ...user, name: res.data.userData.user_name, email: res.data.userData.user_email});
+      const conversationResponse = await fetch("/api/conversations", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      })
+      if(conversationResponse.status === 200) {
+        const conversationRes = await response.json();
+        updateActiveTeamDetails({...res.data.userData.teamdata[0], conversationList: conversationRes.data.conversation});
+      }
+    }
   }
   useEffect(() => {
     getTeamInfo();
