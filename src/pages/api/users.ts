@@ -45,7 +45,7 @@ SELECT
       'team_id', td.id,
       'team_name', td.team_name,
       'available_credit', td.available_credit,
-      'current_number_of_members', td.current_number_of_members,
+      'current_number_of_members', td.current_number_of_members
     )
   ) AS teamData
 FROM users u
