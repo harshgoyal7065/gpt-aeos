@@ -46,30 +46,17 @@ SELECT
       'team_name', td.team_name,
       'available_credit', td.available_credit,
       'current_number_of_members', td.current_number_of_members,
-      'conversationData', COALESCE(
-        (
-          SELECT json_agg(
-            json_build_object(
-              'conversation_id', c.id,
-              'conversation_title', c.conversation_title
-            )
-          ) AS conversation_data
-          FROM conversations c
-          WHERE c.team_id = td.id
-        ),
-        '[]'
-      )
     )
   ) AS teamData
-FROM Users u
-JOIN Team_members tm ON u.id = tm.user_id
-JOIN Teams td ON tm.team_id = td.id
+FROM users u
+JOIN team_members tm ON u.id = tm.user_id
+JOIN teams td ON tm.team_id = td.id
 WHERE u.id = $1
 GROUP BY u.id, u.name, u.email;
 `
     const response = await client.query(query, [userId]);
 
-    if (response.rows[0].team_id) {
+    if (response.rows[0].user_name) {
       return res.status(200).json({
         message: "User data fetched successfully",
         data: {
