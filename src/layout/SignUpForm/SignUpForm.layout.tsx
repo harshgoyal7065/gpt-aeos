@@ -57,6 +57,7 @@ const SignUpForm = () => {
         sessionStorage.removeItem("otp");
         const response = await res.json();
         updateUser({ ...user, id: response.data.id });
+        localStorage.setItem("token", response.data.token);
         setCurrentStep(3);
       }
     }
@@ -66,14 +67,15 @@ const SignUpForm = () => {
 
   const handleTeamCreate = async (e: any) => {
     e.preventDefault();
+    const token = localStorage.getItem("token");
     const res = await fetch("/api/team", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
         teamName,
-        userId: user.id,
         action: "team",
       }),
     });

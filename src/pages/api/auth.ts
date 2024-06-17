@@ -83,10 +83,13 @@ async function handleSignup(req: ExtendedApiRequest, res: NextApiResponse) {
       [name, email, hashedPassword]
     );
 
+    const token = generateToken(response.rows[0].id);
+
     res.status(200).json({ message: 'User created successfully', data: {
       name,
       email,
-      id: response.rows[0].id
+      id: response.rows[0].id,
+      token
     } });
   } catch (error) {
     console.error('Error creating user:', error);

@@ -5,6 +5,8 @@ import { ExtendedApiRequest } from '../../../global';
 // import { db } from '../../../utils/base_conn';
 import pool from '../../../utils/base_conn';
 import sendEmail from '../../../utils/email';
+import { headers } from 'next/headers';
+import { verifyToken } from '../../../utils/authMiddleware';
 
 const saltRounds = 10;
 const secretKey: Secret = process.env.JWT_SECRET as string;
@@ -24,7 +26,14 @@ export default async function handler(req: ExtendedApiRequest, res: NextApiRespo
 
 
 async function handleCreateTeam(req: ExtendedApiRequest, res: NextApiResponse) {
-  const { teamName, userId } = req.body;
+  const { teamName } = req.body;
+  const headersList = headers();
+  const authToken = headersList.get('Authorization')
+  const userId = verifyToken(authToken);
+
+  if(!userId) {
+    return res.status(400).json({ error: "Invalid auth token" });
+  }
 
   // Hash password
   const client = await pool.connect();

@@ -5,6 +5,7 @@ import { ExtendedApiRequest } from "../../../global";
 import pool from "../../../utils/base_conn";
 import sendEmail from "../../../utils/email";
 import { headers } from "next/headers";
+import { verifyToken } from "../../../utils/authMiddleware";
 
 const saltRounds = 10;
 const secretKey: Secret = process.env.JWT_SECRET as string;
@@ -28,8 +29,11 @@ export default async function handler(
 async function getTeamsInfo(_req: ExtendedApiRequest, res: NextApiResponse) {
   const headersList = headers();
   const authToken = headersList.get('Authorization')
+  const userId = verifyToken(authToken);
 
-  const userId = (jwt.verify(authToken as string, process.env.JWT_SECRET as string) as any).id;
+  if(!userId) {
+    return res.status(400).json({ error: "Invalid auth token" });
+  }
 
   // Hash password
   const client = await pool.connect();
@@ -57,21 +61,6 @@ async function getTeamsInfo(_req: ExtendedApiRequest, res: NextApiResponse) {
     );
 
     console.log(response);
-    // const teamId = response.rows[0].id;
-
-    // if (teamId) {
-    //   const response = await client.query(
-    //     "INSERT INTO team_members (team_id, user_id, role_id) VALUES ($1, $2, $3) RETURNING id",
-    //     [teamId, userId, 1]
-    //   );
-
-    //   return res.status(200).json({
-    //     message: "Team created successfully",
-    //     data: {
-    //       teamId,
-    //     },
-    //   });
-    // }
     res.status(400).json({ error: "Team was not created" });
   } catch (error) {
     console.error("Error creating user:", error);
