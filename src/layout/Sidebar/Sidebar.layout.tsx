@@ -8,7 +8,7 @@ const Sidebar = () => {
   const conversationList = useGptStore((state: any) => state.conversationList);
   const activeTeamDetails = useGptStore((state: any) => state.activeTeamDetails);
   const user = useGptStore((state: any) => state.user);
-  
+  console.log(user);
   return (
     <div className="border rounded-lg border-gray-500 flex flex-col justify-between h-full">
         <div>

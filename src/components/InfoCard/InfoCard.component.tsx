@@ -12,8 +12,8 @@ const InfoCard = (props: InfoCardProps) => {
         </div>
         <div>
             <p>{name}</p>
-            <p><span>{teamName}</span><span>{role}</span></p>
-            <p>Click on this card to switch teams</p>
+            <p><span>{teamName}</span> | <span>{role}</span></p>
+            <p className='text-sm'>Click on this card to switch teams</p>
         </div>
     </div>
   )
