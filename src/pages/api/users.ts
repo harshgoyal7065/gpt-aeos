@@ -48,9 +48,9 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
       'current_number_of_members', td.current_number_of_members,
     )
   ) AS teamData
-FROM Users u
-JOIN Team_members tm ON u.id = tm.user_id
-JOIN Teams td ON tm.team_id = td.id
+FROM users u
+JOIN team_members tm ON u.id = tm.user_id
+JOIN teams td ON tm.team_id = td.id
 LEFT JOIN (
   SELECT team_id, json_agg(
     json_build_object(
