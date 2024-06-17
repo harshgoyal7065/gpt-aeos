@@ -13,9 +13,7 @@ const InfoCard = (props: InfoCardProps) => {
         <div>
             <p>{name}</p>
             <p><span>{teamName}</span><span>{role}</span></p>
-        </div>
-        <div>
-          <GoArrowSwitch />
+            <p>Click on this card to switch teams</p>
         </div>
     </div>
   )

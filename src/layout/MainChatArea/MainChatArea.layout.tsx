@@ -12,18 +12,50 @@ const MainChatArea = () => {
 
   const askQuestion = async () => {
     updateConversationList(userQuestion.substring(0,50));
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const createQuestionResponse = await fetch("/api/conversations", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{role: "user", content: userQuestion}],
-        temperature: 0.7
+        team_id: activeTeamDetails.id,
+        conversation_title: userQuestion.substring(0,50)
       })
     })
+
+    if(createQuestionResponse.status === 200) {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        },
+        body: JSON.stringify({
+          model: "gpt-3.5-turbo",
+          messages: [{role: "user", content: userQuestion}],
+          temperature: 0.7
+        })
+      })
+
+      const conversationResponse = await createQuestionResponse.json();
+      if(response.status === 200) {
+        const res = await response.json();
+        const createConversationDetailsResponse = await fetch("/api/conversation-details", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+          },
+          body: JSON.stringify({
+            question: userQuestion,
+            answer: res.data.message,
+            conversation_id: conversationResponse.data.id
+          })
+        })
+      }
+
+    }
   }
   return (
     <div className="h-full">

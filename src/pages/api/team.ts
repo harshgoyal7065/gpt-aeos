@@ -13,7 +13,6 @@ const secretKey: Secret = process.env.JWT_SECRET as string;
 
 export default async function handler(req: ExtendedApiRequest, res: NextApiResponse) {
   const { method } = req;
-  console.log(method);
 
     switch (method) {
       case 'POST':
@@ -26,7 +25,6 @@ export default async function handler(req: ExtendedApiRequest, res: NextApiRespo
         return res.status(405).json({ error: 'Method not allowed' });
     }
 }
-
 
 async function handleCreateTeam(req: ExtendedApiRequest, res: NextApiResponse) {
   const { teamName } = req.body;

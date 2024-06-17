@@ -130,5 +130,5 @@ async function handleSignin(req: ExtendedApiRequest, res: NextApiResponse) {
 }
 
 function generateToken(userId: number): string {
-  return jwt.sign({ userId }, secretKey, { expiresIn: '1h' });
+  return jwt.sign({ userId }, secretKey);
 }
