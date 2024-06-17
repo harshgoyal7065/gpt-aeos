@@ -42,7 +42,7 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
   u.email AS user_email,
   json_agg(
     json_build_object(
-      'team_id', td.team_id,
+      'team_id', td.id,
       'team_name', td.team_name,
       'available_credit', td.available_credit,
       'current_number_of_members', td.current_number_of_members,
