@@ -12,7 +12,6 @@ const MainChatArea = () => {
 
   const askQuestion = async () => {
     updateConversationList(userQuestion.substring(0,50));
-    console.log(activeTeamDetails);
     const createQuestionResponse = await fetch("/api/conversations", {
       method: "POST",
       headers: {
@@ -40,7 +39,7 @@ const MainChatArea = () => {
       })
 
       const conversationResponse = await createQuestionResponse.json();
-      if(response.status === 200) {
+      if(true || response.status === 200) {
         const res = await response.json();
         const createConversationDetailsResponse = await fetch("/api/conversation-details", {
           method: "POST",
@@ -50,7 +49,7 @@ const MainChatArea = () => {
           },
           body: JSON.stringify({
             question: userQuestion,
-            answer: res.data.message,
+            answer: 'This is a random testing message',
             conversation_id: conversationResponse.data.id
           })
         })
