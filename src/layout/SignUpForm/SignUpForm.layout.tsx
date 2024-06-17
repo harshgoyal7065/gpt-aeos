@@ -6,7 +6,7 @@ import TextInput from "@/components/TextInput";
 import Button from "@/components/Button";
 import { useGptStore } from "@/store";
 import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const SignUpForm = () => {
   const [email, setEmail] = useState("");

@@ -1,3 +1,5 @@
+"use client"
+
 import SignUpForm from "@/layout/SignUpForm"
 
 const Page = () => {
