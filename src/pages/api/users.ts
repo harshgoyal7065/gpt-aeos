@@ -38,20 +38,29 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
   try {
     const query = `
       SELECT 
+        u.name AS user_name,
+        u.email AS user_email,
         t.id AS team_id,
         t.team_name,
         t.available_credit,
         t.current_number_of_members,
-        r.role_name
+        r.role_name,
+        c.title AS conversation_title,
+        c.id AS conversation_id
       FROM 
         Teams t
       JOIN 
         Team_members tm ON t.id = tm.team_id
       JOIN 
+        Users u ON tm.user_id = u.id
+      JOIN 
         Roles r ON tm.role_id = r.id
+      LEFT JOIN 
+        conversations c ON t.id = c.team_id
       WHERE 
         tm.user_id = $1;
     `;
+
     const response = await client.query(
       query,
       [userId]
