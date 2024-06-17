@@ -37,35 +37,48 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
 
   try {
     const query = `
-      SELECT 
-        u.name AS user_name,
-        u.email AS user_email,
-        json_agg(
-          json_build_object(
-            'team_id', t.id,
-            'team_name', t.team_name,
-            'available_credit', t.available_credit,
-            'current_number_of_members', t.current_number_of_members,
-            'conversationData', json_agg(
-              json_build_object(
-                'conversation_id', c.id,
-                'conversation_title', c.conversation_title
-              )
-            )
-          )
-        ) AS teamData
-      FROM 
-        Teams t
-      JOIN 
-        Team_members tm ON t.id = tm.team_id
-      JOIN 
-        Users u ON tm.user_id = u.id
-      LEFT JOIN 
-        conversations c ON t.id = c.team_id
-      WHERE 
-        tm.user_id = $1
-      GROUP BY 
-        u.name, u.email;
+      WITH user_data AS (
+  SELECT 
+    t.id AS team_id,
+    t.team_name,
+    t.available_credit,
+    t.current_number_of_members,
+    json_agg(
+      json_build_object(
+        'conversation_id', c.id,
+        'conversation_title', c.conversation_title
+      )
+    ) AS conversation_data
+  FROM 
+    Teams t
+  LEFT JOIN 
+    conversations c ON t.id = c.team_id
+  GROUP BY 
+    t.id, t.team_name, t.available_credit, t.current_number_of_members
+)
+SELECT 
+  u.name AS user_name,
+  u.email AS user_email,
+  json_agg(
+    json_build_object(
+      'team_id', td.team_id,
+      'team_name', td.team_name,
+      'available_credit', td.available_credit,
+      'current_number_of_members', td.current_number_of_members,
+      'conversationData', td.conversation_data
+    )
+  ) AS teamData
+FROM 
+  Users u
+JOIN 
+  Team_members tm ON u.id = tm.user_id
+JOIN 
+  team_data td ON tm.team_id = td.team_id
+WHERE 
+  u.id = $1
+GROUP BY 
+  u.name, u.email;
+
     `;
 
     const response = await client.query(query, [userId]);
