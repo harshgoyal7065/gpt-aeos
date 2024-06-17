@@ -64,7 +64,8 @@ const MainChatArea = () => {
           body: JSON.stringify({
             question: userQuestion,
             answer: 'This is a random testing message',
-            conversation_id: conversationId
+            conversation_id: conversationId,
+            team_id: activeTeamDetails.team_id
           })
         })
       }
