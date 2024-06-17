@@ -10,7 +10,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
     useEffect(() => {
       const token = localStorage.getItem('token');
       if (!token) {
-        router.replace('/signin');
+        router.replace('/login');
       }
     }, [router]);
 

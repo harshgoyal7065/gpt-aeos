@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import NameAvatar from "@/components/NameAvatar";
 import TextInput from "@/components/TextInput";
 import { useGptStore } from "@/store";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const MainChatArea = () => {
@@ -24,6 +25,9 @@ const MainChatArea = () => {
     (state: any) => state.updateActiveConversation
   );
   const user = useGptStore((state: any) => state.user);
+  const resetStore = useGptStore((state: any) => state.resetStore);
+
+  const router = useRouter();
 
   const askQuestion = async () => {
     const token = localStorage.getItem("token");
@@ -60,14 +64,14 @@ const MainChatArea = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
         model: "gpt-3.5-turbo",
-        messages: [{role: "user", content: userQuestion}],
-        temperature: 0.7
-      })
-    })
+        messages: [{ role: "user", content: userQuestion }],
+        temperature: 0.7,
+      }),
+    });
 
     if (response.status === 200) {
       const gptRes = await response.json();
@@ -107,10 +111,17 @@ const MainChatArea = () => {
     }
   };
 
+  const logoutUser = () => {
+    localStorage.removeItem('token');
+    resetStore();
+    router.replace("/login")
+  }
+
   return (
     <div className="h-screen flex flex-col justify-between">
-      <div className="flex justify-between w-10/12">
-        <button>
+      <div className="flex justify-between w-10/12 p-3 m-auto">
+        <h2 className="text-white-primary text-3xl">Ask your questions</h2>
+        <button onClick={() => logoutUser()}>
           <NameAvatar name={user?.name} />
         </button>
       </div>
@@ -132,7 +143,11 @@ const MainChatArea = () => {
         <div className="flex-[4_1_0%]">
           <TextInput
             placeholder="Enter your question"
-            value={activeTeamDetails.available_credit ? userQuestion: 'You have exhausted your limit, your limit replenishes at 8:00AM IST'}
+            value={
+              activeTeamDetails.available_credit
+                ? userQuestion
+                : "You have exhausted your limit, your limit replenishes at 8:00AM IST"
+            }
             onChange={(e) => setUserQuestion(e?.target.value as string)}
             disabled={!activeTeamDetails.available_credit}
           />
