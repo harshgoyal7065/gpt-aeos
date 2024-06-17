@@ -45,7 +45,7 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
         t.available_credit,
         t.current_number_of_members,
         r.role_name,
-        c.title AS conversation_title,
+        c.conversation_title AS conversation_title,
         c.id AS conversation_id
       FROM 
         Teams t

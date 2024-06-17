@@ -25,22 +25,22 @@ const MainChatArea = () => {
     })
 
     if(createQuestionResponse.status === 200) {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{role: "user", content: userQuestion}],
-          temperature: 0.7
-        })
-      })
+      // const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      //   },
+      //   body: JSON.stringify({
+      //     model: "gpt-3.5-turbo",
+      //     messages: [{role: "user", content: userQuestion}],
+      //     temperature: 0.7
+      //   })
+      // })
 
       const conversationResponse = await createQuestionResponse.json();
-      if(true || response.status === 200) {
-        const res = await response.json();
+      if(true) {
+        // const res = await response.json();
         const createConversationDetailsResponse = await fetch("/api/conversation-details", {
           method: "POST",
           headers: {
