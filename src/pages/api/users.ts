@@ -37,7 +37,7 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
 
   try {
     const query = `
-    SELECT
+SELECT
   u.name AS user_name,
   u.email AS user_email,
   json_agg(
@@ -46,21 +46,24 @@ async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
       'team_name', td.team_name,
       'available_credit', td.available_credit,
       'current_number_of_members', td.current_number_of_members,
+      'conversationData', COALESCE(
+        (
+          SELECT json_agg(
+            json_build_object(
+              'conversation_id', c.id,
+              'conversation_title', c.conversation_title
+            )
+          ) AS conversation_data
+          FROM conversations c
+          WHERE c.team_id = td.id
+        ),
+        '[]'
+      )
     )
   ) AS teamData
-FROM users u
-JOIN team_members tm ON u.id = tm.user_id
-JOIN teams td ON tm.team_id = td.id
-LEFT JOIN (
-  SELECT team_id, json_agg(
-    json_build_object(
-      'conversation_id', c.id,
-      'conversation_title', c.conversation_title
-    )
-  ) AS conversation_data
-  FROM conversations c
-  GROUP BY team_id
-) cd ON td.id = cd.team_id
+FROM Users u
+JOIN Team_members tm ON u.id = tm.user_id
+JOIN Teams td ON tm.team_id = td.id
 WHERE u.id = $1
 GROUP BY u.id, u.name, u.email;
 `
