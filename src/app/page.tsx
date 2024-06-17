@@ -1,3 +1,5 @@
+"use client"
+
 import withAuth from "@/components/withAuth";
 import MainChatArea from "@/layout/MainChatArea";
 import Sidebar from "@/layout/Sidebar";
