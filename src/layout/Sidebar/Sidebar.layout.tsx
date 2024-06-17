@@ -18,9 +18,12 @@ const Sidebar = () => {
     (state: any) => state.updateActiveConversation
   );
   const teamList = useGptStore((state: any) => state.teamList);
-  console.log(teamList);
+  const updateActiveTeamDetails = useGptStore(
+    (state: any) => state.updateActiveTeamDetails
+  );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [teamId, setTeamId] = useState(activeTeamDetails.team_id)
 
   const setActiveConversation = async (id: any) => {
     const token = localStorage.getItem("token");
@@ -40,6 +43,12 @@ const Sidebar = () => {
       updateActiveConversation(response.question_answers);
     }
   };
+
+  const handleSubmit = () => {
+    const index = teamList.findIndex((team: any) => team.team_id);
+    updateActiveTeamDetails(teamList[index]);
+    setIsModalOpen(false);
+  }
 
   return (
     <div className="border rounded-lg border-gray-500 flex flex-col justify-between h-full">
@@ -63,12 +72,16 @@ const Sidebar = () => {
           />
         </button>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSubmit={handleSubmit}>
         <h3 className="text-lg leading-6 font-medium text-gray-900">
           Select your team
         </h3>
         <div className="mt-2">
-          <p className="text-sm text-gray-500">Your content here.</p>
+          {
+            teamList.map((team: any) => <button key={team.team_id} onClick={() => setTeamId(team.team_id)}>
+              <InfoCard name={team.team_name} teamName={team.team_name} role={team.role_name}/>
+            </button>)
+          }
         </div>
       </Modal>
     </div>
