@@ -9,7 +9,7 @@ import { useEffect } from "react";
 const Chat = () => {
   const getTeamInfo = async () => {
     const token = localStorage.getItem("token")
-    const response = await fetch("/api/team", {
+    const response = await fetch("/api/users", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

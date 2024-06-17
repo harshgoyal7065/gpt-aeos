@@ -32,6 +32,7 @@ const SignUpForm = () => {
     });
 
     if (res.status === 200) {
+      console.log(token);
       updateUser({ name, email, password, token });
       setCurrentStep(2);
     }
@@ -39,7 +40,7 @@ const SignUpForm = () => {
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
-    if (user.token === enteredToken) {
+    if (user.token === parseInt(enteredToken)) {
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: {
@@ -60,9 +61,10 @@ const SignUpForm = () => {
         localStorage.setItem("token", response.data.token);
         setCurrentStep(3);
       }
+    } else {
+      alert("Wrong OTP added, please try again");
     }
 
-    alert("Wrong OTP added, please try again");
   };
 
   const handleTeamCreate = async (e: any) => {
