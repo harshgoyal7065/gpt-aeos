@@ -11,9 +11,21 @@ const Sidebar = () => {
   const updateActiveConversation = useGptStore((state: any) => state.updateActiveConversation);
   console.log(conversationList, activeTeamDetails);
 
-  const setActiveConversation = (id: any) => {
-    const index = conversationList.findIndex((conversation: any) => conversation.id === id);
-    updateActiveConversation(conversationList[index]);
+  const setActiveConversation = async (id: any) => {
+    const token = localStorage.getItem("token");
+    const createQuestionResponse = await fetch(`/api/conversation-details?conversation_id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    })
+
+    if(createQuestionResponse.status === 200) {
+      const response = await createQuestionResponse.json();
+      updateActiveConversation(response.question_answers);
+    }
+
   }
 
   return (

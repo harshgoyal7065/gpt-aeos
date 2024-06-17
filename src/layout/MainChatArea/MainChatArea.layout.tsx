@@ -10,6 +10,7 @@ const MainChatArea = () => {
   const updateConversationList = useGptStore((state: any) => state.updateConversationList);
   const activeTeamDetails = useGptStore((state: any) => state.activeTeamDetails);
   const activeConversation = useGptStore((state: any) => state.activeConversation);
+  console.log(activeConversation);
 
   const askQuestion = async () => {
     const token = localStorage.getItem("token");
