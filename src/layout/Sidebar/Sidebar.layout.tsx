@@ -76,10 +76,10 @@ const Sidebar = () => {
         <h3 className="text-lg leading-6 font-medium text-teal-400">
           Select your team
         </h3>
-        <div className="mt-2">
+        <div className="mt-8">
           {
-            teamList.map((team: any) => <button className="w-full" key={team.team_id} onClick={() => setTeamId(team.team_id)}>
-              <InfoCard name={team.team_name} teamName={team.team_name} role={team.role_name} showDisclaimer={false}/>
+            teamList.map((team: any) => <button className="w-full mb-4" key={team.team_id} onClick={() => setTeamId(team.team_id)}>
+              <InfoCard name={team.team_name} teamName={team.role_name} role={`${team.available_credit} credits`} showDisclaimer={false}/>
             </button>)
           }
         </div>

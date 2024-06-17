@@ -14,6 +14,9 @@ const MainChatArea = () => {
   const activeTeamDetails = useGptStore(
     (state: any) => state.activeTeamDetails
   );
+  const updateActiveTeamDetails = useGptStore(
+    (state: any) => state.updateActiveTeamDetails
+  );
   const activeConversation = useGptStore(
     (state: any) => state.activeConversation
   );
@@ -52,18 +55,18 @@ const MainChatArea = () => {
       conversationId = activeConversation[0].conversation_id;
     }
 
-    // const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
-    //   },
-    //   body: JSON.stringify({
-    //     model: "gpt-3.5-turbo",
-    //     messages: [{role: "user", content: userQuestion}],
-    //     temperature: 0.7
-    //   })
-    // })
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{role: "user", content: userQuestion}],
+        temperature: 0.7
+      })
+    })
 
     if (true) {
       const createConversationDetailsResponse = await fetch(
@@ -93,6 +96,11 @@ const MainChatArea = () => {
         } else {
           updateActiveConversation([res.question_answer]);
         }
+        const currentCredits = activeTeamDetails.available_credit;
+        updateActiveTeamDetails({
+          ...activeTeamDetails,
+          available_credit: currentCredits,
+        });
       }
     }
   };
@@ -100,9 +108,9 @@ const MainChatArea = () => {
   return (
     <div className="h-screen flex flex-col justify-between">
       <div className="flex justify-between w-10/12">
-      <button>
-        <NameAvatar name={user?.name}/>
-      </button>
+        <button>
+          <NameAvatar name={user?.name} />
+        </button>
       </div>
       <div className="flex-grow p-4 overflow-y-auto">
         <div className="w-10/12 m-auto">
@@ -122,12 +130,17 @@ const MainChatArea = () => {
         <div className="flex-[4_1_0%]">
           <TextInput
             placeholder="Enter your question"
-            value={userQuestion}
+            value={activeTeamDetails.available_credit ? userQuestion: 'You have exhausted your limit, your limit replenishes at 8:00AM IST'}
             onChange={(e) => setUserQuestion(e?.target.value as string)}
+            disabled={!activeTeamDetails.available_credit}
           />
         </div>
         <div className="flex-[1_1_0%]">
-          <Button text="Submit" onClick={askQuestion} />
+          <Button
+            text="Submit"
+            onClick={askQuestion}
+            disabled={!activeTeamDetails.available_credit}
+          />
         </div>
       </div>
     </div>
