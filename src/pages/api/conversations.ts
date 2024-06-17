@@ -3,12 +3,14 @@ import { ExtendedApiRequest } from "../../../global";
 import pool from "../../../utils/base_conn";
 
 export default async function handler(req: ExtendedApiRequest, res: NextApiResponse) {
-  if (req.method === "POST") {
-    return handleCreateConversationThread(req, res);
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    return res.status(405).json({ error: `Method ${req.method} Not Allowed` });
-  }
+    const { method } = req;
+
+    switch (method) {
+      case "POST":
+        return handleCreateConversationThread(req, res);
+      default:
+        return res.status(405).json({ error: "Method not allowed" });
+    }
 }
 
 async function handleCreateConversationThread(req: ExtendedApiRequest, res: NextApiResponse) {
