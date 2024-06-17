@@ -3,7 +3,6 @@ import bcrypt, { compare } from 'bcrypt';
 import jwt, { Secret } from 'jsonwebtoken';
 import { ExtendedApiRequest } from '../../../global';
 // import { db } from '../../../utils/base_conn';
-import { neon } from '@neondatabase/serverless';
 import pool from '../../../utils/base_conn';
 import sendEmail from '../../../utils/email';
 

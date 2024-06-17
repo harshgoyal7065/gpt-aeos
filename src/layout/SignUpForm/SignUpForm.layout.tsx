@@ -33,15 +33,13 @@ const SignUpForm = () => {
 
     if (res.status === 200) {
       updateUser({ name, email, password, token });
-      sessionStorage.setItem("otp", `${token}`);
       setCurrentStep(2);
     }
   };
 
   const handleSignup = async (e: any) => {
     e.preventDefault();
-    const sentToken = sessionStorage.getItem("otp");
-    if (sentToken === enteredToken) {
+    if (user.token === enteredToken) {
       const res = await fetch("/api/auth", {
         method: "POST",
         headers: {
@@ -58,8 +56,7 @@ const SignUpForm = () => {
       if (res.status === 200) {
         sessionStorage.removeItem("otp");
         const response = await res.json();
-        console.log(response);
-        updateUser({ ...user, id: response.id });
+        updateUser({ ...user, id: response.data.id });
         setCurrentStep(3);
       }
     }
@@ -82,7 +79,7 @@ const SignUpForm = () => {
     });
 
     if (res.status === 200) {
-      redirect("/");
+      redirect("/chat");
     }
   };
 
@@ -148,7 +145,7 @@ const SignUpForm = () => {
             value={teamName}
             onChange={(e) => setTeamName(e?.target.value as string)}
           />
-          <Button text="Verify" onClick={handleTeamCreate} />
+          <Button text="Create Team" onClick={handleTeamCreate} />
         </form>
       )}
     </AuthForms>

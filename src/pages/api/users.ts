@@ -4,6 +4,7 @@ import jwt, { Secret } from "jsonwebtoken";
 import { ExtendedApiRequest } from "../../../global";
 import pool from "../../../utils/base_conn";
 import sendEmail from "../../../utils/email";
+import { headers } from "next/headers";
 
 const saltRounds = 10;
 const secretKey: Secret = process.env.JWT_SECRET as string;
@@ -24,8 +25,11 @@ export default async function handler(
   }
 }
 
-async function getTeamsInfo(req: ExtendedApiRequest, res: NextApiResponse) {
-  const { userId } = req.body;
+async function getTeamsInfo(_req: ExtendedApiRequest, res: NextApiResponse) {
+  const headersList = headers();
+  const authToken = headersList.get('Authorization')
+
+  const userId = (jwt.verify(authToken as string, process.env.JWT_SECRET as string) as any).id;
 
   // Hash password
   const client = await pool.connect();

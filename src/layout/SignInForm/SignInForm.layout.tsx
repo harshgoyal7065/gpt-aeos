@@ -6,10 +6,12 @@ import Button from "@/components/Button";
 import { useState } from "react";
 import { validateEmail } from "../../../utils/common";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter()
 
   const handleSignIn = async (e: any) => {
     e.preventDefault();
@@ -28,8 +30,8 @@ const SignInForm = () => {
 
     if(res.status === 200) {
         const response = await res.json();
-        console.log(response);
-        localStorage.setItem("token", response.token);
+        localStorage.setItem("token", response.data.token);
+        router.push("/chat");
     }
   };
 

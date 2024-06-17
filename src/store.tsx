@@ -21,7 +21,11 @@ import { create } from 'zustand'
 
 export const useGptStore = create()((set) => ({
     user: null,
+    conversationList: [],
     updateUser: (newUser: any) => set(() => ({
         user: newUser
+    })),
+    updateConversationList: (newConversation: any) => set((state: any) => ({
+        conversationList: [...state.conversationList, newConversation]
     }))
 }))

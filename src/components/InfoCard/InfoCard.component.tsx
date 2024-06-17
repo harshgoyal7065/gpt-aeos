@@ -1,6 +1,7 @@
 import React from 'react'
 import { InfoCardProps } from './InfoCard';
 import NameAvatar from '../NameAvatar';
+import { GoArrowSwitch } from 'react-icons/go';
 
 const InfoCard = (props: InfoCardProps) => {
   const {name, teamName, role} = props;
@@ -12,6 +13,9 @@ const InfoCard = (props: InfoCardProps) => {
         <div>
             <p>{name}</p>
             <p><span>{teamName}</span><span>{role}</span></p>
+        </div>
+        <div>
+          <GoArrowSwitch />
         </div>
     </div>
   )
