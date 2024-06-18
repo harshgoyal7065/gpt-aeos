@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 const SignInForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSignIn = async (e: any) => {
     e.preventDefault();
@@ -30,8 +30,9 @@ const SignInForm = () => {
 
     if(res.status === 200) {
         const response = await res.json();
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.token);
         router.push("/chat");
+        router.refresh();
     }
   };
 
