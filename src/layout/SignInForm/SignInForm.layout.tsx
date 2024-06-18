@@ -27,9 +27,10 @@ const SignInForm = () => {
         },
         body: JSON.stringify({ email, password, action: "signin" })
     });
-
+    console.log(res);
     if(res.status === 200) {
         const response = await res.json();
+        console.log(response);
         localStorage.setItem("token", response.token);
         router.push("/chat");
         router.refresh();
